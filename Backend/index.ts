@@ -44,7 +44,8 @@ app.put("/ticket/:id", async (req, res) => {
   res.json(ticket);
 });
 
-
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+module.exports = app;

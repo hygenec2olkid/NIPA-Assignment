@@ -56,9 +56,9 @@ export default function BasicTabs() {
       fetch('http://localhost:8000/ticket').then((res) => res.json())
   })
 
-  if (isLoading) return 'Loading...'
+  if (isLoading) return <div>Loading...</div>
 
-  if (error) return 'An error has occurred'
+  if (error) return <div>An error has occurred</div>
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -71,9 +71,9 @@ export default function BasicTabs() {
         >
           <Tab label="Board View" />
           <Tab label="Table" />
-          <FormDialog mode={1} />
+
           <div className="grow"></div>
-          <FormDialog mode={2} />
+          <FormDialog />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} data={data}></TabPanel>

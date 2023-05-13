@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
@@ -8,10 +8,9 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import AddIcon from '@mui/icons-material/Add'
-import { grey } from '@mui/material/colors'
+import { Ticket } from 'interfaces'
 
-export default function FormDialog(props) {
-  const { mode } = props
+export default function FormDialog() {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
@@ -26,7 +25,7 @@ export default function FormDialog(props) {
     setOpen(false)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     mutation.mutate({
       title: title,
@@ -40,7 +39,7 @@ export default function FormDialog(props) {
   }
 
   const mutation = useMutation({
-    mutationFn: (newTicket) => {
+    mutationFn: (newTicket: Ticket) => {
       return fetch(`http://localhost:8000/ticket`, {
         method: 'POST',
         headers: {
@@ -56,18 +55,10 @@ export default function FormDialog(props) {
 
   return (
     <div className="mr-5 self-center">
-      {mode === 1 ? (
-        <AddIcon
-          style={{ fontSize: 18, color: grey[500] }}
-          className="self-center cursor-pointer"
-          onClick={handleClickOpen}
-        />
-      ) : (
-        <Button variant="outlined" onClick={handleClickOpen}>
-          <AddIcon style={{ fontSize: 18 }} />
-          New
-        </Button>
-      )}
+      <Button variant="outlined" onClick={handleClickOpen}>
+        <AddIcon style={{ fontSize: 18 }} />
+        New
+      </Button>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Ticket</DialogTitle>

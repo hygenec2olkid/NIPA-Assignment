@@ -1,11 +1,39 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  UseMutationResult,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
+import { Ticket } from 'interfaces'
 import { useEffect, useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult
+} from 'react-beautiful-dnd'
 import { v4 as uuidv4 } from 'uuid'
 
-const delay = (ms) => new Promise((rev) => setTimeout(rev, ms))
-
-const onDragEnd = async (result, columns, mutation) => {
+const onDragEnd = async (
+  result: DropResult,
+  columns: {
+    [x: string]: {
+      name: string
+      items: any
+    }
+  },
+  setColumns: (columns: {
+    [x: string]: {
+      name: string
+      items: any
+    }
+  }) => void,
+  mutation: UseMutationResult<
+    Response,
+    unknown,
+    { id: string; status: string },
+    unknown
+  >
+) => {
   if (!result.destination) return
   const { source, destination } = result
   if (source.droppableId !== destination.droppableId) {
@@ -16,21 +44,47 @@ const onDragEnd = async (result, columns, mutation) => {
     const [removed] = sourceItems.splice(source.index, 1)
     destItems.splice(destination.index, 0, removed)
 
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...sourceColumn,
+        items: sourceItems
+      },
+      [destination.droppableId]: {
+        ...destColumn,
+        items: destItems
+      }
+    })
+
     await mutation.mutateAsync({ id: removed._id, status: destColumn.name })
   }
 }
 
 interface DragAndDropProps {
-  data: any
+  data: Ticket[]
 }
 
 function DragAndDrop(props: DragAndDropProps) {
   const queryClient = useQueryClient()
   const { data } = props
-  useEffect(() => {
-    console.log(data)
-  }, [data])
-  const columnsFromBackend = {
+
+  const mutation = useMutation({
+    mutationFn: (data: { id: string; status: string }) => {
+      const { id, status } = data
+
+      return fetch(`http://localhost:8000/ticket/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: status })
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['tickets'])
+    }
+  })
+  const [columns, setColumns] = useState({
     [uuidv4()]: {
       name: 'pending',
       items: data.filter((ticket) => ticket.status === 'pending')
@@ -47,24 +101,27 @@ function DragAndDrop(props: DragAndDropProps) {
       name: 'rejected',
       items: data.filter((ticket) => ticket.status === 'rejected')
     }
-  }
-
-  const mutation = useMutation({
-    mutationFn: (data) => {
-      const { id, status } = data
-
-      return fetch(`http://localhost:8000/ticket/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: status })
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['tickets'])
-    }
   })
+  useEffect(() => {
+    setColumns({
+      [uuidv4()]: {
+        name: 'pending',
+        items: data.filter((ticket) => ticket.status === 'pending')
+      },
+      [uuidv4()]: {
+        name: 'accepted',
+        items: data.filter((ticket) => ticket.status === 'accepted')
+      },
+      [uuidv4()]: {
+        name: 'resolved',
+        items: data.filter((ticket) => ticket.status === 'resolved')
+      },
+      [uuidv4()]: {
+        name: 'rejected',
+        items: data.filter((ticket) => ticket.status === 'rejected')
+      }
+    })
+  }, [data])
   return (
     <div
       style={{
@@ -75,10 +132,10 @@ function DragAndDrop(props: DragAndDropProps) {
     >
       <DragDropContext
         onDragEnd={async (result) =>
-          await onDragEnd(result, columnsFromBackend, mutation)
+          await onDragEnd(result, columns, setColumns, mutation)
         }
       >
-        {Object.entries(columnsFromBackend).map(([id, column]) => {
+        {Object.entries(columns).map(([id, column]) => {
           let backgroundColor
           switch (column.name) {
             case 'pending':
@@ -134,7 +191,7 @@ function DragAndDrop(props: DragAndDropProps) {
                           return (
                             <Draggable
                               key={item._id}
-                              draggableId={item._id}
+                              draggableId={item._id || ''}
                               index={index}
                             >
                               {(provided, snapshot) => {
