@@ -1,18 +1,28 @@
 // import express, { Express, Request, Response } from "express";
 const express = require("express");
 // import dotenv from "dotenv";
-const dotenv = require("dotenv")
+// const dotenv = require("dotenv")
 // import { Console } from "console";
 // import cors from "cors";
-const cors = require("cors")
+const cors = require("cors");
 
-dotenv.config();
+// dotenv.config();
 
 const app = express();
 app.use(cors());
-const port = process.env.PORT;
+// const port = process.env.PORT;
 const mongoose = require("mongoose");
-const Ticket = require("./models/Ticket");
+const TicketSchema = new mongoose.Schema(
+  {
+    title: String,
+    description: String,
+    contactInformation: String,
+    status: { type: String, default: "pending" },
+  },
+  { timestamps: true, versionKey: false }
+);
+
+const Ticket = mongoose.model("Ticket", TicketSchema);
 app.use(express.json());
 
 mongoose
@@ -47,8 +57,8 @@ app.put("/ticket/:id", async (req, res) => {
   res.json(ticket);
 });
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+app.listen(5000, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:5000`);
 });
 
 module.exports = app;
