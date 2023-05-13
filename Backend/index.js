@@ -1,11 +1,14 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { Console } from "console";
-import cors from "cors";
+// import express, { Express, Request, Response } from "express";
+const express = require("express");
+// import dotenv from "dotenv";
+const dotenv = require("dotenv")
+// import { Console } from "console";
+// import cors from "cors";
+const cors = require("cors")
 
 dotenv.config();
 
-const app: Express = express();
+const app = express();
 app.use(cors());
 const port = process.env.PORT;
 const mongoose = require("mongoose");
