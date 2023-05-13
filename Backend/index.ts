@@ -1,28 +1,14 @@
-// import express, { Express, Request, Response } from "express";
-const express = require("express");
-// import dotenv from "dotenv";
-// const dotenv = require("dotenv")
-// import { Console } from "console";
-// import cors from "cors";
-const cors = require("cors");
+import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 
-// dotenv.config();
+dotenv.config();
 
-const app = express();
+const app: Express = express();
 app.use(cors());
-// const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const mongoose = require("mongoose");
-const TicketSchema = new mongoose.Schema(
-  {
-    title: String,
-    description: String,
-    contactInformation: String,
-    status: { type: String, default: "pending" },
-  },
-  { timestamps: true, versionKey: false }
-);
-
-const Ticket = mongoose.model("Ticket", TicketSchema);
+const Ticket = require("./models/Ticket");
 app.use(express.json());
 
 mongoose
@@ -62,5 +48,3 @@ app.listen(5000, () => {
 });
 
 module.exports = app;
-
-
