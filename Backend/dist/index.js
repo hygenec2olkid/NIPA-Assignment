@@ -18,12 +18,12 @@ const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const mongoose = require("mongoose");
 const Ticket = require("./models/Ticket");
 app.use(express_1.default.json());
 mongoose
-    .connect("mongodb+srv://hygene:UaOLGJveN7Rzewm4@atlascluster.1ean1se.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
+    .connect("mongodb+srv://hygene:UaOLGJveN7Rzewm4@cluster0.dumiclz.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
     .then(() => console.log("success connect"))
     .catch((err) => console.error(err));
 app.get("/", (req, res) => {
@@ -45,7 +45,7 @@ app.put("/ticket/:id", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const ticket = yield Ticket.findByIdAndUpdate(id, { $set: payload });
     res.json(ticket);
 }));
-app.listen(5000, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:5000`);
+app.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 module.exports = app;

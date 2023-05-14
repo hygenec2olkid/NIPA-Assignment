@@ -5,13 +5,7 @@ import Box from '@mui/material/Box'
 import DragAndDrop from './draganddrop'
 import FormDialog from './dialog'
 import DataTable from './table'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -41,10 +35,6 @@ function TabPanel(props: TabPanelProps) {
 }
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0)
-  const [open, setDialogOpen] = React.useState(false)
-  const handleAddIconClick = () => {
-    setDialogOpen(true)
-  }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -71,7 +61,6 @@ export default function BasicTabs() {
         >
           <Tab label="Board View" />
           <Tab label="Table" />
-
           <div className="grow"></div>
           <FormDialog />
         </Tabs>

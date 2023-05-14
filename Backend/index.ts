@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -6,14 +6,14 @@ dotenv.config();
 
 const app: Express = express();
 app.use(cors());
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const mongoose = require("mongoose");
 const Ticket = require("./models/Ticket");
 app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb+srv://hygene:UaOLGJveN7Rzewm4@atlascluster.1ean1se.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://hygene:UaOLGJveN7Rzewm4@cluster0.dumiclz.mongodb.net/?retryWrites=true&w=majority",
     { useNewUrlParser: true }
   )
   .then(() => console.log("success connect"))
@@ -43,8 +43,8 @@ app.put("/ticket/:id", async (req, res) => {
   res.json(ticket);
 });
 
-app.listen(5000, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:5000`);
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
 module.exports = app;

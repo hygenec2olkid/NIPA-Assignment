@@ -200,17 +200,15 @@ function DragAndDrop(props: DragAndDropProps) {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
+                                    className="shadow-md "
                                     style={{
                                       userSelect: 'none',
                                       padding: 16,
                                       margin: '0 0 8px 0',
                                       minHeight: '50px',
                                       borderRadius: 10,
-                                      backgroundColor: snapshot.isDragging
-                                        ? 'rgb(2 132 199)'
-                                        : 'rgb(14 165 233)',
-                                      color: 'white',
-
+                                      borderWidth: 1,
+                                      color: 'black',
                                       ...provided.draggableProps.style
                                     }}
                                   >
