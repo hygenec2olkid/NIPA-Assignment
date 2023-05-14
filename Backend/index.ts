@@ -24,11 +24,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/ticket", async (req, res) => {
-  res.send("hello from /ticket");
   const tickets = await Ticket.find({});
   res.json(tickets.sort());
 });
-
 
 app.post("/ticket", async (req, res) => {
   const payload = req.body;
