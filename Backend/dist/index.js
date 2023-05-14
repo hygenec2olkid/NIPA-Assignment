@@ -48,4 +48,9 @@ app.put("/ticket/:id", (req, res) => __awaiter(void 0, void 0, void 0, function*
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-module.exports = app;
+// module.exports = app;
+module.exports = (req, res) => {
+    // res.send("Hello, World!")
+    // res.status(500).json({message: "Something went wrong!"}) 
+    res.json({ message: "Hello, World!" });
+};
