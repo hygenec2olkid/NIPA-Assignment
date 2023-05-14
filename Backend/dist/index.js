@@ -48,28 +48,4 @@ app.put("/ticket/:id", (req, res) => __awaiter(void 0, void 0, void 0, function*
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-// module.exports = app;
-module.exports = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield within(getUsers, res, 7000);
-});
-function within(fn, res, duration) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const id = setTimeout(() => res.json({
-            message: "There was an error with the upstream service!",
-        }), duration);
-        try {
-            let data = yield fn();
-            clearTimeout(id);
-            res.json(data);
-        }
-        catch (e) {
-            res.status(500).json({ message: e.message });
-        }
-    });
-}
-function getUsers(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const tickets = yield Ticket.find({});
-        return res.json(tickets.sort());
-    });
-}
+module.exports = app;

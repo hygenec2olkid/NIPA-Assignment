@@ -47,30 +47,4 @@ app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 
-// module.exports = app;
-module.exports = async (req, res) => {
-  await within(getUsers, res, 7000);
-};
-
-async function within(fn, res, duration) {
-  const id = setTimeout(
-    () =>
-      res.json({
-        message: "There was an error with the upstream service!",
-      }),
-    duration
-  );
-
-  try {
-    let data = await fn();
-    clearTimeout(id);
-    res.json(data);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
-  }
-}
-
-async function getUsers(req, res) {
-  const tickets = await Ticket.find({});
-  return res.json(tickets.sort());
-}
+module.exports = app;
