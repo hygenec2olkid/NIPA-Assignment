@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
     res.send("hello from backend");
 });
 app.get("/ticket", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.send("hello from /ticket");
     const tickets = yield Ticket.find({});
     res.json(tickets.sort());
 }));
