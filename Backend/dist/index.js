@@ -29,25 +29,22 @@ mongoose
 app.get("/", (req, res) => {
     res.send("hello from backend");
 });
-// app.get("/ticket", async (req, res) => {
-//   const tickets = await Ticket.find({});
-//   res.json(tickets.sort());
-// });
 app.get("/ticket", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("hello from /ticket");
+    const tickets = yield Ticket.find({});
+    res.json(tickets.sort());
 }));
-// app.post("/ticket", async (req, res) => {
-//   const payload = req.body;
-//   const ticket = new Ticket(payload);
-//   await ticket.save();
-//   res.status(201).json(ticket);
-// });
-// app.put("/ticket/:id", async (req, res) => {
-//   const payload = req.body;
-//   const { id } = req.params;
-//   const ticket = await Ticket.findByIdAndUpdate(id, { $set: payload });
-//   res.json(ticket);
-// });
+app.post("/ticket", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = req.body;
+    const ticket = new Ticket(payload);
+    yield ticket.save();
+    res.status(201).json(ticket);
+}));
+app.put("/ticket/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = req.body;
+    const { id } = req.params;
+    const ticket = yield Ticket.findByIdAndUpdate(id, { $set: payload });
+    res.json(ticket);
+}));
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
