@@ -48,8 +48,29 @@ app.listen(port, () => {
 });
 
 // module.exports = app;
-module.exports = (req, res) => {
-  // res.send("Hello, World!")
-  // res.status(500).json({message: "Something went wrong!"}) 
-  res.json({message: "Hello, World!"})
+module.exports = async (req, res) => {
+  await within(getUsers, res, 7000);
+};
+
+async function within(fn, res, duration) {
+  const id = setTimeout(
+    () =>
+      res.json({
+        message: "There was an error with the upstream service!",
+      }),
+    duration
+  );
+
+  try {
+    let data = await fn();
+    clearTimeout(id);
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+}
+
+async function getUsers(req, res) {
+  const tickets = await Ticket.find({});
+  return res.json(tickets.sort());
 }
