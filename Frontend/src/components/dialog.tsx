@@ -40,8 +40,7 @@ export default function FormDialog() {
 
   const mutation = useMutation({
     mutationFn: (newTicket: Ticket) => {
-      // return fetch(`http://localhost:8000/ticket`, {
-      return fetch(`https://nipa-assignment-backend.vercel.app/ticket`, {
+      return fetch(`http://localhost:8000/ticket`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
