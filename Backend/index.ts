@@ -17,7 +17,7 @@ mongoose
     { useNewUrlParser: true }
   )
   .then(() => console.log("success connect"))
-  .catch((err) => console.error(err));
+  .catch((err: any) => console.error(err));
 
 app.get("/", (req, res) => {
   res.send("Hello from back-end! /ticket to see all tickets");
