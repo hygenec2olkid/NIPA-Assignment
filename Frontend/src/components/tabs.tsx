@@ -43,7 +43,6 @@ export default function BasicTabs() {
   const { isLoading, error, data } = useQuery({
     queryKey: ['tickets'],
     queryFn: () =>
-      // fetch('https://nipa-assignment-backend.vercel.app/ticket').then((res) => res.json())
       fetch('http://localhost:8000/ticket').then((res) => res.json())
   })
 
