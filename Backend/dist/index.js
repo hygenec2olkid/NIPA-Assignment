@@ -27,7 +27,7 @@ mongoose
     .then(() => console.log("success connect"))
     .catch((err) => console.error(err));
 app.get("/", (req, res) => {
-    res.send("Hello from back-end! /ticket to see all tickets new");
+    res.send("Hello from back-end! /ticket to see all tickets");
 });
 app.get("/ticket", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tickets = yield Ticket.find({});
