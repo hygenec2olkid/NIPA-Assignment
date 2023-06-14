@@ -20,7 +20,7 @@ mongoose
   .catch((err: any) => console.error(err));
 
 app.get("/", (req, res) => {
-  res.send("Hello from back-end! /ticket to see all tickets");
+  res.send("Hello from back-end! /ticket to see all tickets new");
 });
 
 app.get("/ticket", async (req, res) => {
