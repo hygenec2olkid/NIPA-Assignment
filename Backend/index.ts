@@ -13,7 +13,7 @@ app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb+srv://hygene:UaOLGJveN7Rzewm4@cluster0.dumiclz.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://hygene:UaOLGJveN7Rzewm4@atlascluster.1ean1se.mongodb.net/?retryWrites=true&w=majority",
     { useNewUrlParser: true }
   )
   .then(() => console.log("success connect"))

@@ -23,7 +23,7 @@ const mongoose = require("mongoose");
 const Ticket = require("./models/Ticket");
 app.use(express_1.default.json());
 mongoose
-    .connect("mongodb+srv://hygene:UaOLGJveN7Rzewm4@cluster0.dumiclz.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
+    .connect("mongodb+srv://hygene:UaOLGJveN7Rzewm4@atlascluster.1ean1se.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
     .then(() => console.log("success connect"))
     .catch((err) => console.error(err));
 app.get("/", (req, res) => {
